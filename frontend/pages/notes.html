@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes | Notes Service</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<div class="page-shell">
+
+    <header class="page-header">
+        <div class="page-header__inner">
+            <div class="page-brand">Notes Service</div>
+            <nav class="page-nav">
+                <a href="./login.html">Login</a>
+                <a href="./users.html">Users</a>
+                <a href="./notes.html">Notes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-main">
+        <h1 class="page-title">Notes</h1>
+
+        <div class="page-grid">
+
+            <div class="list">
+                <div class="note-item">
+                    <strong>Shopping list</strong>
+                    <p>Milk, bread, apples...</p>
+                </div>
+
+                <div class="note-item">
+                    <strong>Project ideas</strong>
+                    <p>Websocket alerts, shared editing...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Note Details</h2>
+
+                <p><strong>Title:</strong> Shopping list</p>
+                <p><strong>Content:</strong> Milk, bread, apples, cheese</p>
+                <p><strong>Owner:</strong> test</p>
+
+                <div class="actions">
+                    <button class="button">Edit</button>
+                    <button class="button button--danger">Delete</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dialog">
+            <h2>Create Note</h2>
+
+            <form class="form">
+                <div class="form__group">
+                    <label for="note-title">Title</label>
+                    <input class="form__input" id="note-title" type="text" placeholder="Enter note title">
+                </div>
+
+                <div class="form__group">
+                    <label for="note-content">Content</label>
+                    <textarea class="form__textarea" id="note-content" placeholder="Enter note content"></textarea>
+                </div>
+
+                <button class="button" type="button">Create Note</button>
+            </form>
+        </div>
+    </main>
+</div>
+</body>
+</html>

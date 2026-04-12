@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users | Notes Service</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+<div class="page-shell">
+
+    <header class="page-header">
+        <div class="page-header__inner">
+            <div class="page-brand">Notes Service</div>
+            <nav class="page-nav">
+                <a href="./login.html">Login</a>
+                <a href="./users.html">Users</a>
+                <a href="./notes.html">Notes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-main">
+        <h1 class="page-title">Users</h1>
+
+        <div class="page-grid">
+
+            <!-- LEFT: users list -->
+            <div class="list">
+                <div class="user-item user-item--active">
+                    <strong>test</strong>
+                    <div class="badge">Regular</div>
+                </div>
+
+                <div class="user-item user-item--active">
+                    <strong>admin</strong>
+                    <div class="badge badge--admin">Admin</div>
+                </div>
+            </div>
+
+            <!-- RIGHT: selected user -->
+            <div class="card">
+                <h2>User Details</h2>
+
+                <p><strong>Username:</strong> test</p>
+                <p><strong>Role:</strong> Regular</p>
+
+                <div class="actions">
+                    <button class="button">Edit</button>
+                    <button class="button button--danger">Delete</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CREATE USER DIALOG -->
+        <div class="dialog">
+            <h2>Create User</h2>
+
+            <form class="form">
+                <div class="form__group">
+                    <label>Username</label>
+                    <input class="form__input" placeholder="Enter username">
+                </div>
+
+                <div class="form__group">
+                    <label>Password</label>
+                    <input class="form__input" type="password" placeholder="Enter password">
+                </div>
+
+                <button class="button">Create</button>
+            </form>
+        </div>
+
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.card {
+    @include card;
+    padding: 20px;
+}
+
+.button {
+    @include button-base;
+    background: $color-primary;
+    color: #ffffff;
+
+    &:hover {
+        background: $color-primary-hover;
+        transform: translateY(-1px);
+    }
+}
+
+.button--danger {
+    background: $color-danger;
+}
+
+.button--secondary {
+    background: #e8ecf8;
+    color: $color-text;
+}
+
+.form {
+    display: grid;
+    gap: 16px;
+}
+
+.form__group {
+    display: grid;
+    gap: 8px;
+}
+
+.form__input,
+.form__select,
+.form__textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: #ffffff;
+}
+
+.form__textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.page-title {
+    margin: 0 0 20px;
+    font-size: 28px;
+}
+
+.list {
+    display: grid;
+    gap: 16px;
+}
+
+.user-item,
+.note-item {
+    @include card;
+    padding: 18px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    background: #eef2ff;
+    color: $color-primary;
+}
+
+.badge--admin {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.alert {
+    padding: 14px 16px;
+    border-radius: $radius-sm;
+    margin-bottom: 16px;
+}
+
+.alert--error {
+    background: #ffe4e6;
+    color: #be123c;
+}
+
+.alert--success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.validation-error {
+    font-size: 14px;
+    color: $color-danger;
+}
+
+.dialog {
+    @include card;
+    max-width: 560px;
+    margin: 24px auto 0;
+    padding: 24px;
+}
+
+.actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+}
+
+.user-item {
+    cursor: pointer;
+}
+
+.user-item:hover {
+    transform: translateY(-2px);
+}
+
+.user-item--active {
+    border: 2px solid $color-primary;
+}
+
+.note-item {
+    cursor: pointer;
+}
+
+.note-item:hover {
+    transform: translateY(-2px);
+}
+
+.note-item p {
+    margin-bottom: 0;
+    color: $color-muted;
+}

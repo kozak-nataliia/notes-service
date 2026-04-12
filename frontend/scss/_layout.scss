@@ -1,0 +1,48 @@
+@use "variables" as *;
+@use "mixins" as *;
+
+.page-shell {
+    min-height: 100vh;
+}
+
+.page-header {
+    background: $color-surface;
+    border-bottom: 1px solid $color-border;
+}
+
+.page-header__inner {
+    @include page-container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.page-brand {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.page-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.page-main {
+    @include page-container;
+}
+
+.page-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+    .page-grid {
+        grid-template-columns: 1fr;
+    }
+}

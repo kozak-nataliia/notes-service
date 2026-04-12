@@ -1,0 +1,24 @@
+@use "variables" as *;
+
+@mixin card {
+    background: $color-surface;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+}
+
+@mixin button-base {
+    border: none;
+    border-radius: $radius-sm;
+    padding: 12px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+@mixin page-container {
+    width: 100%;
+    max-width: $container-width;
+    margin: 0 auto;
+    padding: 24px;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Notes Service</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="page-header">
+            <div class="page-header__inner">
+                <div class="page-brand">Notes Service</div>
+                <nav class="page-nav">
+                    <a href="./login.html">Login</a>
+                    <a href="./users.html">Users</a>
+                    <a href="./notes.html">Notes</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-main">
+            <div class="dialog">
+                <h1 class="page-title">Login</h1>
+
+                <div class="alert alert--error">
+                    Invalid username or password.
+                </div>
+
+                <form class="form">
+                    <div class="form__group">
+                        <label for="username">Username</label>
+                        <input class="form__input" id="username" type="text" placeholder="Enter username">
+                        <div class="validation-error">Username is required.</div>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="password">Password</label>
+                        <input class="form__input" id="password" type="password" placeholder="Enter password">
+                    </div>
+
+                    <button class="button" type="button">Login</button>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
