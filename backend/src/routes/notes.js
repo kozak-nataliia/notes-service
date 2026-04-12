@@ -33,24 +33,26 @@ router.get("/:id", (req, res) => {
 
 // CREATE note
 router.post("/", (req, res) => {
-    const { title, content } = req.body;
+    const { title, content, user_id } = req.body;
 
-    if (!title || !content) {
-        return res.status(400).json({ error: "Title and content are required" });
+    if (!title || !content || user_id == null) {
+        return res.status(400).json({ error: "Missing fields" });
     }
 
     db.run(
-        "INSERT INTO notes (title, content) VALUES (?, ?)",
-        [title, content],
+        "INSERT INTO notes (title, content, user_id) VALUES (?, ?, ?)",
+        [title, content, user_id],
         function insertCallback(err) {
             if (err) {
-                return res.status(500).json({ error: "Database error" });
+                console.error("DB ERROR:", err);
+                return res.status(500).json({ error: err.message });
             }
 
             return res.status(201).json({
                 id: this.lastID,
                 title,
-                content
+                content,
+                user_id
             });
         }
     );

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const notesRoutes = require("./routes/notes");
+const usersRoutes = require("./routes/users");
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/notes", notesRoutes);
+app.use("/api/users", usersRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
