@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Technical information -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Note | Notes Service</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="site-body">
+    <div class="page-shell">
+        <!-- Header -->
+        <header class="page-header">
+            <div class="page-header__inner">
+                <div class="page-brand">Notes Service</div>
+                <nav class="page-nav" aria-label="Main navigation">
+                    <a class="page-nav__link" href="login.html">Login</a>
+                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link page-nav__link--active" href="notes.html">Notes</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="page-main page-main--centered">
+            <section class="dialog" aria-labelledby="edit-note-title">
+                <h1 id="edit-note-title" class="page-title">Edit Note</h1>
+
+                <div class="alert alert--success" role="status">
+                    Note loaded. This is a static preview of the edit state.
+                </div>
+
+                <form class="form" action="#" method="post">
+                    <div class="form__group">
+                        <label class="form__label" for="edit-note-title-field">Title</label>
+                        <input
+                            class="form__input"
+                            id="edit-note-title-field"
+                            name="edit-note-title-field"
+                            type="text"
+                            value="Shopping list"
+                        >
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label" for="edit-note-content">Content</label>
+                        <textarea
+                            class="form__textarea"
+                            id="edit-note-content"
+                            name="edit-note-content"
+                        >Milk, bread, apples, cheese. Buy everything before evening.</textarea>
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label" for="edit-note-tags">Tags</label>
+                        <input
+                            class="form__input"
+                            id="edit-note-tags"
+                            name="edit-note-tags"
+                            type="text"
+                            value="home, food"
+                        >
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label" for="edit-shared-users">Shared users</label>
+                        <select class="form__select" id="edit-shared-users" name="edit-shared-users">
+                            <option selected>admin</option>
+                            <option>olena</option>
+                            <option>taras</option>
+                        </select>
+                    </div>
+
+                    <div class="form__group">
+                        <p class="helper-text">Last edited by admin at 2026-04-12 13:54.</p>
+                    </div>
+
+                    <div class="actions">
+                        <button class="button" type="submit">Save changes</button>
+                        <a class="button button--secondary" href="note-details.html">Cancel</a>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+            <div class="page-footer__inner">
+                Static layout for Lab 1
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
