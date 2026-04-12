@@ -1,48 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Technical information -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
 </head>
-<body>
+<body class="site-body">
     <div class="page-shell">
+        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
-                <nav class="page-nav">
-                    <a href="./login.html">Login</a>
-                    <a href="./users.html">Users</a>
-                    <a href="./notes.html">Notes</a>
+                <nav class="page-nav" aria-label="Main navigation">
+                    <a class="page-nav__link page-nav__link--active" href="login.html">Login</a>
+                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link" href="notes.html">Notes</a>
                 </nav>
             </div>
         </header>
 
-        <main class="page-main">
-            <div class="dialog">
-                <h1 class="page-title">Login</h1>
+        <!-- Main content -->
+        <main class="page-main page-main--centered">
+            <section class="dialog" aria-labelledby="login-title">
+                <h1 id="login-title" class="page-title">Login</h1>
 
-                <div class="alert alert--error">
+                <!-- Error notification example -->
+                <div class="alert alert--error" role="alert">
                     Invalid username or password.
                 </div>
 
-                <form class="form">
+                <!-- Login form -->
+                <form class="form" action="#" method="post">
                     <div class="form__group">
-                        <label for="username">Username</label>
-                        <input class="form__input" id="username" type="text" placeholder="Enter username">
-                        <div class="validation-error">Username is required.</div>
+                        <label class="form__label" for="username">Username</label>
+                        <input
+                            class="form__input"
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Enter username"
+                            value=""
+                        >
+                        <p class="validation-error">Username is required.</p>
                     </div>
 
                     <div class="form__group">
-                        <label for="password">Password</label>
-                        <input class="form__input" id="password" type="password" placeholder="Enter password">
+                        <label class="form__label" for="password">Password</label>
+                        <input
+                            class="form__input"
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter password"
+                        >
                     </div>
 
-                    <button class="button" type="button">Login</button>
+                    <div class="actions">
+                        <button class="button" type="submit">Login</button>
+                    </div>
                 </form>
-            </div>
+            </section>
         </main>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+            <div class="page-footer__inner">
+                Static layout for Lab 1
+            </div>
+        </footer>
     </div>
 </body>
 </html>

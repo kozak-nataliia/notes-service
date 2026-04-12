@@ -1,75 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Technical information -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Notes | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
 </head>
-<body>
-<div class="page-shell">
+<body class="site-body">
+    <div class="page-shell">
+        <!-- Header -->
+        <header class="page-header">
+            <div class="page-header__inner">
+                <div class="page-brand">Notes Service</div>
+                <nav class="page-nav" aria-label="Main navigation">
+                    <a class="page-nav__link" href="login.html">Login</a>
+                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link page-nav__link--active" href="notes.html">Notes</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                </nav>
+            </div>
+        </header>
 
-    <header class="page-header">
-        <div class="page-header__inner">
-            <div class="page-brand">Notes Service</div>
-            <nav class="page-nav">
-                <a href="./login.html">Login</a>
-                <a href="./users.html">Users</a>
-                <a href="./notes.html">Notes</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="page-main">
-        <h1 class="page-title">Notes</h1>
-
-        <div class="page-grid">
-
-            <div class="list">
-                <div class="note-item">
-                    <strong>Shopping list</strong>
-                    <p>Milk, bread, apples...</p>
+        <!-- Main content -->
+        <main class="page-main">
+            <div class="page-toolbar">
+                <div>
+                    <h1 class="page-title">Notes</h1>
+                    <p class="page-subtitle">Personal and shared notes.</p>
                 </div>
-
-                <div class="note-item">
-                    <strong>Project ideas</strong>
-                    <p>Websocket alerts, shared editing...</p>
+                <div class="toolbar-actions">
+                    <a class="button" href="note-create.html">Create note</a>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Note Details</h2>
+            <div class="page-grid">
+                <!-- Notes list -->
+                <section class="card" aria-labelledby="notes-list-title">
+                    <h2 id="notes-list-title" class="section-title">Note list</h2>
 
-                <p><strong>Title:</strong> Shopping list</p>
-                <p><strong>Content:</strong> Milk, bread, apples, cheese</p>
-                <p><strong>Owner:</strong> test</p>
+                    <div class="list">
+                        <article class="note-item note-item--active">
+                            <div class="note-item__top">
+                                <h3 class="item-title">Shopping list</h3>
+                                <span class="badge">Personal</span>
+                            </div>
+                            <p class="item-text">Milk, bread, apples, cheese.</p>
+                            <div class="actions actions--small">
+                                <a class="button button--secondary" href="note-details.html">View</a>
+                                <a class="button button--secondary" href="note-edit.html">Edit</a>
+                            </div>
+                        </article>
 
-                <div class="actions">
-                    <button class="button">Edit</button>
-                    <button class="button button--danger">Delete</button>
-                </div>
+                        <article class="note-item">
+                            <div class="note-item__top">
+                                <h3 class="item-title">Project ideas</h3>
+                                <span class="badge badge--shared">Shared</span>
+                            </div>
+                            <p class="item-text">Websocket alerts, shared editing, note history.</p>
+                            <div class="actions actions--small">
+                                <a class="button button--secondary" href="note-details.html">View</a>
+                                <a class="button button--secondary" href="note-edit.html">Edit</a>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- Note preview -->
+                <aside class="card" aria-labelledby="preview-title">
+                    <h2 id="preview-title" class="section-title">Note preview</h2>
+                    <div class="details-list">
+                        <div class="details-row">
+                            <span class="details-label">Title</span>
+                            <span class="details-value">Shopping list</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Owner</span>
+                            <span class="details-value">test</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Tags</span>
+                            <span class="details-value">home, food</span>
+                        </div>
+                    </div>
+
+                    <p class="item-text">
+                        Milk, bread, apples, cheese. Buy everything before evening.
+                    </p>
+
+                    <div class="actions">
+                        <a class="button" href="note-details.html">Open details</a>
+                        <a class="button button--danger" href="notes.html">Delete</a>
+                    </div>
+                </aside>
             </div>
+        </main>
 
-        </div>
-
-        <div class="dialog">
-            <h2>Create Note</h2>
-
-            <form class="form">
-                <div class="form__group">
-                    <label for="note-title">Title</label>
-                    <input class="form__input" id="note-title" type="text" placeholder="Enter note title">
-                </div>
-
-                <div class="form__group">
-                    <label for="note-content">Content</label>
-                    <textarea class="form__textarea" id="note-content" placeholder="Enter note content"></textarea>
-                </div>
-
-                <button class="button" type="button">Create Note</button>
-            </form>
-        </div>
-    </main>
-</div>
+        <!-- Footer -->
+        <footer class="page-footer">
+            <div class="page-footer__inner">
+                Static layout for Lab 1
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

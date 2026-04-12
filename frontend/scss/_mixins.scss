@@ -4,16 +4,22 @@
     background: $color-surface;
     border: 1px solid $color-border;
     border-radius: $radius-md;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-sm;
 }
 
 @mixin button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 12px 18px;
     border: none;
     border-radius: $radius-sm;
-    padding: 12px 18px;
     font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color $transition-fast, transform $transition-fast, box-shadow $transition-fast;
 }
 
 @mixin page-container {
@@ -21,4 +27,15 @@
     max-width: $container-width;
     margin: 0 auto;
     padding: 24px;
+}
+
+@mixin focus-ring {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(85, 98, 255, 0.18);
+}
+
+@mixin panel-title {
+    margin: 0 0 16px;
+    font-size: 22px;
+    line-height: 1.2;
 }
