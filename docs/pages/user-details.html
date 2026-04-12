@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Technical information -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Details | Notes Service</title>
+    <link rel="stylesheet" href="../css/main.css">
+</head>
+<body class="site-body">
+    <div class="page-shell">
+        <!-- Header -->
+        <header class="page-header">
+            <div class="page-header__inner">
+                <div class="page-brand">Notes Service</div>
+                <nav class="page-nav" aria-label="Main navigation">
+                    <a class="page-nav__link" href="login.html">Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="notes.html">Notes</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="page-main">
+            <div class="page-toolbar">
+                <div>
+                    <h1 class="page-title">User Details</h1>
+                    <p class="page-subtitle">Information about selected user.</p>
+                </div>
+                <div class="toolbar-actions">
+                    <a class="button button--secondary" href="users.html">Back to users</a>
+                </div>
+            </div>
+
+            <section class="card details-card" aria-labelledby="user-details-title">
+                <h2 id="user-details-title" class="section-title">Selected user</h2>
+
+                <div class="details-list">
+                    <div class="details-row">
+                        <span class="details-label">Username</span>
+                        <span class="details-value">test</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Role</span>
+                        <span class="details-value"><span class="badge">Regular</span></span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Created notes</span>
+                        <span class="details-value">6</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Shared notes</span>
+                        <span class="details-value">2</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Last activity</span>
+                        <span class="details-value">2026-04-12 14:10</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a class="button" href="user-edit.html">Edit user</a>
+                    <a class="button button--danger" href="users.html">Delete user</a>
+                </div>
+            </section>
+
+            <section class="card card--danger-state" aria-labelledby="delete-warning-title">
+                <h2 id="delete-warning-title" class="section-title">Delete confirmation</h2>
+                <p class="item-text">
+                    This static block represents delete user functionality for Lab 1.
+                    In later labs it will be connected to the back end.
+                </p>
+                <div class="actions">
+                    <a class="button button--danger" href="users.html">Confirm delete</a>
+                    <a class="button button--secondary" href="user-details.html">Cancel</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="page-footer">
+            <div class="page-footer__inner">
+                Static layout for Lab 1
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
