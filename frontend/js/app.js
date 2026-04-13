@@ -1,5 +1,6 @@
 const API_BASE_URL = "http://localhost:3000/api";
 const CURRENT_USER_KEY = "notes-service-current-user";
+const FLASH_MESSAGE_KEY = "notes-service-flash-message";
 
 function getCurrentUser() {
     try {
@@ -17,6 +18,32 @@ function clearCurrentUser() {
     window.localStorage.removeItem(CURRENT_USER_KEY);
 }
 
+function setFlashMessage(message, type = "success", page = getPageName()) {
+    window.sessionStorage.setItem(FLASH_MESSAGE_KEY, JSON.stringify({ message, type, page }));
+}
+
+function consumeFlashMessage() {
+    try {
+        const storedValue = window.sessionStorage.getItem(FLASH_MESSAGE_KEY);
+
+        if (!storedValue) {
+            return null;
+        }
+
+        const flash = JSON.parse(storedValue);
+
+        if (flash.page && flash.page !== getPageName()) {
+            return null;
+        }
+
+        window.sessionStorage.removeItem(FLASH_MESSAGE_KEY);
+        return flash;
+    } catch (error) {
+        window.sessionStorage.removeItem(FLASH_MESSAGE_KEY);
+        return null;
+    }
+}
+
 function getPageName() {
     const parts = window.location.pathname.split("/");
     return parts[parts.length - 1];
@@ -31,14 +58,30 @@ function redirectTo(page, id) {
     window.location.href = target;
 }
 
+function redirectWithFlash(page, message, id, type = "success") {
+    setFlashMessage(message, type, page);
+    redirectTo(page, id);
+}
+
+function reloadWithFlash(message, type = "success") {
+    setFlashMessage(message, type, getPageName());
+    window.location.reload();
+}
+
 function showFeedback(element, message, type = "success") {
     if (!element) {
         return;
     }
 
+    if (element.feedbackTimer) {
+        window.clearTimeout(element.feedbackTimer);
+        element.feedbackTimer = null;
+    }
+
     element.hidden = false;
     element.className = `alert alert--${type}`;
     element.textContent = message;
+
 }
 
 function hideFeedback(element) {
@@ -50,10 +93,146 @@ function hideFeedback(element) {
     element.textContent = "";
 }
 
+function showStoredFlashMessage(selector = '.alert[role="status"]') {
+    const feedback = document.querySelector(selector);
+    const flash = consumeFlashMessage();
+
+    if (!feedback || !flash) {
+        return;
+    }
+
+    showFeedback(feedback, flash.message, flash.type);
+}
+
+function isAdmin(user = getCurrentUser()) {
+    return Boolean(user && user.role === "Admin");
+}
+
+function isSelf(userId) {
+    const currentUser = getCurrentUser();
+    return Boolean(currentUser && Number(currentUser.id) === Number(userId));
+}
+
+function canManageNote(note) {
+    const currentUser = getCurrentUser();
+    return Boolean(
+        currentUser && (isAdmin(currentUser) || Number(note.user_id) === Number(currentUser.id))
+    );
+}
+
+function requireLogin() {
+    const pageName = getPageName();
+
+    if (pageName === "login.html" || pageName === "register.html") {
+        return true;
+    }
+
+    if (!getCurrentUser()) {
+        redirectTo("login.html");
+        return false;
+    }
+
+    return true;
+}
+
+function requireAdminAccess() {
+    if (!isAdmin()) {
+        redirectTo("notes.html");
+        return false;
+    }
+
+    return true;
+}
+
+function updateNavigation() {
+    const currentUser = getCurrentUser();
+    const pageName = getPageName();
+
+    if (pageName === 'login.html') {
+        return;
+    }
+
+    if (pageName === 'register.html') {
+        return;
+    }
+
+    document.querySelectorAll('.page-nav__link[href="login.html"]').forEach((link) => {
+        if (!link.classList.contains("page-nav__link--logout")) {
+            if (currentUser) {
+                link.remove();
+            }
+        }
+    });
+
+    document.querySelectorAll('.page-nav__link[href="register.html"]').forEach((link) => {
+        if (currentUser) {
+            link.remove();
+        }
+    });
+
+    document.querySelectorAll(".page-nav__link--logout").forEach((link) => {
+        if (!currentUser) {
+            link.remove();
+        }
+    });
+
+    document.querySelectorAll('.page-nav__link[href="users.html"]').forEach((link) => {
+        if (!isAdmin(currentUser)) {
+            link.remove();
+        }
+    });
+
+    document.querySelectorAll('.page-nav__link[href="notes.html"]').forEach((link) => {
+        if (!currentUser) {
+            link.remove();
+        }
+    });
+}
+
+function wireLogoutLinks() {
+    document.querySelectorAll(".page-nav__link--logout").forEach((link) => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            clearCurrentUser();
+            redirectTo("login.html");
+        });
+    });
+}
+
+function formatRole(role) {
+    return role === "Admin"
+        ? '<span class="badge badge--admin">Admin</span>'
+        : '<span class="badge">Regular</span>';
+}
+
+function formatTags(tags) {
+    return tags ? tags : "No tags";
+}
+
+function formatDate(dateValue) {
+    if (!dateValue) {
+        return "Not available";
+    }
+
+    return new Date(dateValue.replace(" ", "T")).toLocaleString();
+}
+
+function getAuthHeaders() {
+    const currentUser = getCurrentUser();
+
+    return currentUser
+        ? {
+            "x-user-id": String(currentUser.id)
+        }
+        : {};
+}
+
 async function request(path, options = {}) {
     const response = await fetch(`${API_BASE_URL}${path}`, {
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            ...getAuthHeaders(),
+            ...(options.headers || {})
         },
         ...options
     });
@@ -76,59 +255,47 @@ async function loadNotes(userId) {
     return request(`/notes${suffix}`);
 }
 
-function wireLogoutLinks() {
-    document.querySelectorAll(".page-nav__link--logout").forEach((link) => {
-        link.addEventListener("click", (event) => {
-            event.preventDefault();
-            clearCurrentUser();
-            redirectTo("login.html");
-        });
-    });
+function askForConfirmation(message) {
+    return window.confirm(message);
 }
 
-function updateNavigation() {
-    const currentUser = getCurrentUser();
-
-    document.querySelectorAll(".page-nav__link--logout").forEach((link) => {
-        link.hidden = !currentUser;
-    });
-}
-
-function formatRole(role) {
-    return role === "Admin"
-        ? '<span class="badge badge--admin">Admin</span>'
-        : '<span class="badge">Regular</span>';
-}
-
-function formatTags(tags) {
-    return tags ? tags : "No tags";
-}
-
-function formatDate(dateValue) {
-    if (!dateValue) {
-        return "Not available";
-    }
-
-    return new Date(dateValue.replace(" ", "T")).toLocaleString();
-}
-
-async function initLoginPage() {
-    const form = document.querySelector("#login-form");
-    const feedback = document.querySelector("#login-feedback");
-
-    if (!form) {
+function disableElement(element, disabled) {
+    if (!element) {
         return;
     }
 
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        hideFeedback(feedback);
+    element.disabled = disabled;
+    if ("hidden" in element && disabled) {
+        element.hidden = false;
+    }
+}
 
-        const formData = new FormData(form);
+async function initLoginPage() {
+    const loginForm = document.querySelector("#login-form");
+    const loginFeedback = document.querySelector("#login-feedback");
+
+    if (!loginForm) {
+        return;
+    }
+
+    if (getCurrentUser()) {
+        redirectTo("notes.html");
+        return;
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        hideFeedback(loginFeedback);
+        const formData = new FormData(loginForm);
         const payload = {
             username: String(formData.get("username") || "").trim(),
             password: String(formData.get("password") || "")
         };
+
+        if (!payload.username || !payload.password) {
+            showFeedback(loginFeedback, "Username and password are required.", "error");
+            return;
+        }
 
         try {
             const user = await request("/auth/login", {
@@ -139,7 +306,60 @@ async function initLoginPage() {
             setCurrentUser(user);
             redirectTo("notes.html");
         } catch (error) {
-            showFeedback(feedback, error.message, "error");
+            showFeedback(loginFeedback, error.message, "error");
+        }
+    });
+}
+
+async function initRegisterPage() {
+    const registerForm = document.querySelector("#register-form");
+    const registerFeedback = document.querySelector("#register-feedback");
+
+    if (!registerForm) {
+        return;
+    }
+
+    if (getCurrentUser()) {
+        redirectTo("notes.html");
+        return;
+    }
+
+    registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        hideFeedback(registerFeedback);
+
+        const formData = new FormData(registerForm);
+        const payload = {
+            username: String(formData.get("username") || "").trim(),
+            password: String(formData.get("password") || ""),
+            confirmPassword: String(formData.get("confirmPassword") || ""),
+            role: String(formData.get("role") || "Regular")
+        };
+
+        if (!payload.username || !payload.password) {
+            showFeedback(registerFeedback, "Username and password are required.", "error");
+            return;
+        }
+
+        if (payload.password !== payload.confirmPassword) {
+            showFeedback(registerFeedback, "Passwords must match.", "error");
+            return;
+        }
+
+        try {
+            const user = await request("/auth/register", {
+                method: "POST",
+                body: JSON.stringify({
+                    username: payload.username,
+                    password: payload.password,
+                    role: payload.role
+                })
+            });
+
+            setCurrentUser(user);
+            redirectWithFlash("notes.html", `Account created as ${user.role}.`);
+        } catch (error) {
+            showFeedback(registerFeedback, error.message, "error");
         }
     });
 }
@@ -176,6 +396,10 @@ function renderUsersList(users) {
 }
 
 async function initUsersPage() {
+    if (!requireAdminAccess()) {
+        return;
+    }
+
     const form = document.querySelector("#create-user-form");
     const feedback = document.querySelector("#users-feedback");
 
@@ -195,24 +419,31 @@ async function initUsersPage() {
         hideFeedback(feedback);
 
         const formData = new FormData(form);
-        const password = String(formData.get("password") || "");
-        const confirmPassword = String(formData.get("confirmPassword") || "");
+        const payload = {
+            username: String(formData.get("username") || "").trim(),
+            password: String(formData.get("password") || ""),
+            confirmPassword: String(formData.get("confirmPassword") || ""),
+            role: String(formData.get("role") || "Regular")
+        };
 
-        if (password !== confirmPassword) {
+        if (!payload.username || !payload.password) {
+            showFeedback(feedback, "Username and password are required.", "error");
+            return;
+        }
+
+        if (payload.password !== payload.confirmPassword) {
             showFeedback(feedback, "Passwords must match.", "error");
             return;
         }
 
-        const payload = {
-            username: String(formData.get("username") || "").trim(),
-            password,
-            role: String(formData.get("role") || "Regular")
-        };
-
         try {
             await request("/users", {
                 method: "POST",
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    username: payload.username,
+                    password: payload.password,
+                    role: payload.role
+                })
             });
 
             form.reset();
@@ -228,6 +459,12 @@ async function initUserDetailsPage() {
     const userId = getQueryId();
 
     if (!userId) {
+        redirectTo("notes.html");
+        return;
+    }
+
+    if (!isAdmin() && !isSelf(userId)) {
+        redirectTo("notes.html");
         return;
     }
 
@@ -243,9 +480,21 @@ async function initUserDetailsPage() {
 
         const editLink = document.querySelector("#edit-user-link");
         const deleteButton = document.querySelector("#delete-user-button");
+        const deleteSection = document.querySelector(".card--danger-state");
 
         editLink.href = `user-edit.html?id=${user.id}`;
+
+        if (!isAdmin()) {
+            deleteButton.hidden = true;
+            deleteSection.hidden = true;
+            return;
+        }
+
         deleteButton.addEventListener("click", async () => {
+            if (!askForConfirmation(`Delete user "${user.username}" and all of their notes?`)) {
+                return;
+            }
+
             try {
                 await request(`/users/${user.id}`, { method: "DELETE" });
                 redirectTo("users.html");
@@ -264,7 +513,20 @@ async function initUserEditPage() {
     const userId = getQueryId();
 
     if (!form || !userId) {
+        redirectTo("notes.html");
         return;
+    }
+
+    if (!isAdmin() && !isSelf(userId)) {
+        redirectTo("notes.html");
+        return;
+    }
+
+    const roleField = document.querySelector("#edit-role");
+    const roleGroup = roleField ? roleField.closest(".form__group") : null;
+
+    if (!isAdmin() && roleGroup) {
+        roleGroup.hidden = true;
     }
 
     try {
@@ -273,6 +535,7 @@ async function initUserEditPage() {
         form.elements.role.value = user.role;
     } catch (error) {
         showFeedback(feedback, error.message, "error");
+        return;
     }
 
     form.addEventListener("submit", async (event) => {
@@ -280,33 +543,40 @@ async function initUserEditPage() {
         hideFeedback(feedback);
 
         const formData = new FormData(form);
+        const username = String(formData.get("username") || "").trim();
         const password = String(formData.get("password") || "");
         const confirmPassword = String(formData.get("confirmPassword") || "");
 
-        if (!password) {
-            showFeedback(feedback, "Password is required.", "error");
+        if (!username) {
+            showFeedback(feedback, "Username is required.", "error");
             return;
         }
 
-        if (password !== confirmPassword) {
+        if (password && password !== confirmPassword) {
             showFeedback(feedback, "Passwords must match.", "error");
             return;
         }
 
-        const payload = {
-            username: String(formData.get("username") || "").trim(),
-            password,
-            role: String(formData.get("role") || "Regular")
-        };
-
         try {
-            await request(`/users/${userId}`, {
+            const payload = {
+                username,
+                role: String(formData.get("role") || "Regular")
+            };
+
+            if (password) {
+                payload.password = password;
+            }
+
+            const updatedUser = await request(`/users/${userId}`, {
                 method: "PUT",
                 body: JSON.stringify(payload)
             });
 
-            showFeedback(feedback, "User updated successfully.");
-            window.setTimeout(() => redirectTo("user-details.html", userId), 700);
+            if (isSelf(userId)) {
+                setCurrentUser(updatedUser);
+            }
+
+            reloadWithFlash("User updated successfully.");
         } catch (error) {
             showFeedback(feedback, error.message, "error");
         }
@@ -343,34 +613,82 @@ function renderNotesList(notes) {
 
     list.innerHTML = notes
         .map(
-            (note, index) => `
-                <article class="note-item${index === 0 ? " note-item--active" : ""}">
-                    <div class="note-item__top">
-                        <h3 class="item-title">${note.title}</h3>
-                        <span class="badge">${note.username || "Unknown owner"}</span>
-                    </div>
-                    <p class="item-text">${note.content}</p>
-                    <div class="actions actions--small">
-                        <a class="button button--secondary" href="note-details.html?id=${note.id}">View</a>
-                        <a class="button button--secondary" href="note-edit.html?id=${note.id}">Edit</a>
-                    </div>
-                </article>
-            `
+            (note, index) => {
+                const editable = canManageNote(note);
+
+                return `
+                    <article class="note-item${index === 0 ? " note-item--active" : ""}" data-note-id="${note.id}">
+                        <div class="note-item__top">
+                            <h3 class="item-title">${note.title}</h3>
+                            <span class="badge">${note.username || "Unknown owner"}</span>
+                        </div>
+                        <p class="item-text">${note.content}</p>
+                        <div class="actions actions--small">
+                            <a class="button button--secondary" href="note-details.html?id=${note.id}">View</a>
+                            ${editable ? `<a class="button button--secondary" href="note-edit.html?id=${note.id}">Edit</a>` : ""}
+                        </div>
+                    </article>
+                `;
+            }
         )
         .join("");
 }
 
+function setActiveNoteCard(noteId) {
+    document.querySelectorAll("#notes-list .note-item").forEach((item) => {
+        item.classList.toggle("note-item--active", Number(item.dataset.noteId) === Number(noteId));
+    });
+}
+
+function placePreviewNextToNote(noteId) {
+    const previewCard = document.querySelector("#notes-preview-card");
+    const notesList = document.querySelector("#notes-list");
+    const notesSection = notesList ? notesList.closest(".card") : null;
+
+    if (!previewCard || !notesList || !notesSection) {
+        return;
+    }
+
+    const targetNote = notesList.querySelector(`[data-note-id="${noteId}"]`);
+
+    if (!targetNote) {
+        previewCard.style.marginTop = "0px";
+        return;
+    }
+
+    if (window.innerWidth <= 1000) {
+        previewCard.style.marginTop = "0px";
+        return;
+    }
+
+    const sectionRect = notesSection.getBoundingClientRect();
+    const targetRect = targetNote.getBoundingClientRect();
+    const maxOffset = Math.max(0, notesSection.offsetHeight - previewCard.offsetHeight);
+    const desiredOffset = Math.max(0, Math.round(targetRect.top - sectionRect.top));
+    const clampedOffset = Math.min(desiredOffset, maxOffset);
+
+    previewCard.style.marginTop = `${clampedOffset}px`;
+}
+
 function renderPreview(note) {
+    const editable = canManageNote(note);
+
     document.querySelector("#preview-note-title").textContent = note.title;
     document.querySelector("#preview-owner").textContent = note.username || "Unknown owner";
     document.querySelector("#preview-tags").textContent = formatTags(note.tags);
     document.querySelector("#preview-updated").textContent = formatDate(note.updated_at);
     document.querySelector("#preview-content").textContent = note.content;
     document.querySelector("#preview-open").href = `note-details.html?id=${note.id}`;
-    document.querySelector("#preview-edit").href = `note-edit.html?id=${note.id}`;
 
+    const editLink = document.querySelector("#preview-edit");
     const deleteButton = document.querySelector("#preview-delete");
+
+    editLink.href = `note-edit.html?id=${note.id}`;
+    editLink.hidden = !editable;
+    deleteButton.hidden = !editable;
     deleteButton.dataset.noteId = String(note.id);
+    deleteButton.dataset.noteTitle = note.title;
+    placePreviewNextToNote(note.id);
 }
 
 async function initNotesPage() {
@@ -378,25 +696,65 @@ async function initNotesPage() {
     const currentUser = getCurrentUser();
 
     try {
-        const notes = await loadNotes(currentUser ? currentUser.id : null);
+        const notes = await loadNotes(isAdmin(currentUser) ? null : currentUser.id);
         renderNotesList(notes);
 
         if (notes[0]) {
+            document.querySelector("#notes-preview-card").hidden = false;
             renderPreview(notes[0]);
+            setActiveNoteCard(notes[0].id);
+        } else {
+            document.querySelector("#notes-preview-card").hidden = true;
+            document.querySelector("#preview-edit").hidden = true;
+            document.querySelector("#preview-delete").hidden = true;
         }
+
+        document.querySelectorAll("#notes-list .note-item").forEach((item) => {
+            item.addEventListener("click", (event) => {
+                if (event.target.closest("a, button")) {
+                    return;
+                }
+
+                const selectedNote = notes.find(
+                    (note) => Number(note.id) === Number(item.dataset.noteId)
+                );
+
+                if (!selectedNote) {
+                    return;
+                }
+
+                renderPreview(selectedNote);
+                setActiveNoteCard(selectedNote.id);
+            });
+        });
+
+        window.addEventListener("resize", () => {
+            const activeNote = notes.find((note) => {
+                const activeItem = document.querySelector("#notes-list .note-item--active");
+                return activeItem && Number(note.id) === Number(activeItem.dataset.noteId);
+            });
+
+            if (activeNote) {
+                placePreviewNextToNote(activeNote.id);
+            }
+        });
 
         const deleteButton = document.querySelector("#preview-delete");
         deleteButton.addEventListener("click", async () => {
             const noteId = deleteButton.dataset.noteId;
+            const noteTitle = deleteButton.dataset.noteTitle || "this note";
 
             if (!noteId) {
                 return;
             }
 
+            if (!askForConfirmation(`Delete "${noteTitle}"?`)) {
+                return;
+            }
+
             try {
                 await request(`/notes/${noteId}`, { method: "DELETE" });
-                showFeedback(feedback, "Note deleted successfully.");
-                window.location.reload();
+                reloadWithFlash("Note deleted successfully.");
             } catch (error) {
                 showFeedback(feedback, error.message, "error");
             }
@@ -411,23 +769,39 @@ async function initNoteDetailsPage() {
     const feedback = document.querySelector("#note-details-feedback");
 
     if (!noteId) {
+        redirectTo("notes.html");
         return;
     }
 
     try {
         const note = await request(`/notes/${noteId}`);
+        const editable = canManageNote(note);
 
         document.querySelector("#note-details-title").textContent = note.title;
         document.querySelector("#note-owner").textContent = note.username || "Unknown owner";
         document.querySelector("#note-tags").textContent = formatTags(note.tags);
         document.querySelector("#note-updated").textContent = formatDate(note.updated_at);
         document.querySelector("#note-content").textContent = note.content;
-        document.querySelector("#edit-note-link").href = `note-edit.html?id=${note.id}`;
 
-        document.querySelector("#delete-note-button").addEventListener("click", async () => {
+        const editLink = document.querySelector("#edit-note-link");
+        const deleteButton = document.querySelector("#delete-note-button");
+
+        editLink.href = `note-edit.html?id=${note.id}`;
+        editLink.hidden = !editable;
+        deleteButton.hidden = !editable;
+
+        if (!editable) {
+            showFeedback(feedback, "You can view this note, but only the owner or an admin can edit it.", "error");
+        }
+
+        deleteButton.addEventListener("click", async () => {
+            if (!askForConfirmation(`Delete "${note.title}"?`)) {
+                return;
+            }
+
             try {
                 await request(`/notes/${note.id}`, { method: "DELETE" });
-                redirectTo("notes.html");
+                redirectWithFlash("notes.html", "Note deleted successfully.");
             } catch (error) {
                 showFeedback(feedback, error.message, "error");
             }
@@ -445,9 +819,27 @@ async function initNoteCreatePage() {
         return;
     }
 
-    const users = await loadUsers();
     const currentUser = getCurrentUser();
-    populateOwnerSelect(form.elements.userId, users, currentUser && currentUser.id);
+    const ownerSelect = form.elements.userId;
+    const ownerGroup = ownerSelect.closest(".form__group");
+
+    try {
+        if (isAdmin(currentUser)) {
+            const users = await loadUsers();
+            populateOwnerSelect(ownerSelect, users, currentUser.id);
+        } else {
+            ownerSelect.innerHTML = `<option value="${currentUser.id}">${currentUser.username}</option>`;
+            ownerSelect.value = String(currentUser.id);
+            disableElement(ownerSelect, true);
+        }
+    } catch (error) {
+        showFeedback(feedback, error.message, "error");
+        return;
+    }
+
+    if (!isAdmin(currentUser)) {
+        ownerGroup.hidden = true;
+    }
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -458,8 +850,13 @@ async function initNoteCreatePage() {
             title: String(formData.get("title") || "").trim(),
             content: String(formData.get("content") || "").trim(),
             tags: String(formData.get("tags") || "").trim(),
-            user_id: Number(formData.get("userId"))
+            user_id: Number(isAdmin(currentUser) ? formData.get("userId") : currentUser.id)
         };
+
+        if (!payload.title || !payload.content) {
+            showFeedback(feedback, "Title and content are required.", "error");
+            return;
+        }
 
         try {
             const note = await request("/notes", {
@@ -467,8 +864,7 @@ async function initNoteCreatePage() {
                 body: JSON.stringify(payload)
             });
 
-            showFeedback(feedback, "Note created successfully.");
-            window.setTimeout(() => redirectTo("note-details.html", note.id), 700);
+            redirectWithFlash("note-details.html", "Note created successfully.", note.id);
         } catch (error) {
             showFeedback(feedback, error.message, "error");
         }
@@ -481,22 +877,41 @@ async function initNoteEditPage() {
     const noteId = getQueryId();
 
     if (!form || !noteId) {
+        redirectTo("notes.html");
         return;
     }
 
-    try {
-        const [users, note] = await Promise.all([
-            loadUsers(),
-            request(`/notes/${noteId}`)
-        ]);
+    const currentUser = getCurrentUser();
+    const ownerSelect = form.elements.userId;
+    const ownerGroup = ownerSelect.closest(".form__group");
 
-        populateOwnerSelect(form.elements.userId, users, note.user_id);
+    try {
+        const note = await request(`/notes/${noteId}`);
+
+        if (!canManageNote(note)) {
+            showFeedback(feedback, "Only the note owner or an admin can edit this note.", "error");
+            Array.from(form.elements).forEach((element) => disableElement(element, true));
+            return;
+        }
+
+        if (isAdmin(currentUser)) {
+            const users = await loadUsers();
+            populateOwnerSelect(ownerSelect, users, note.user_id);
+        } else {
+            ownerSelect.innerHTML = `<option value="${note.user_id}">${note.username}</option>`;
+            ownerSelect.value = String(note.user_id);
+            disableElement(ownerSelect, true);
+            ownerGroup.hidden = true;
+        }
+
         form.elements.title.value = note.title;
         form.elements.content.value = note.content;
         form.elements.tags.value = note.tags || "";
         document.querySelector("#note-last-updated").textContent = formatDate(note.updated_at);
     } catch (error) {
         showFeedback(feedback, error.message, "error");
+        Array.from(form.elements).forEach((element) => disableElement(element, true));
+        return;
     }
 
     form.addEventListener("submit", async (event) => {
@@ -508,8 +923,13 @@ async function initNoteEditPage() {
             title: String(formData.get("title") || "").trim(),
             content: String(formData.get("content") || "").trim(),
             tags: String(formData.get("tags") || "").trim(),
-            user_id: Number(formData.get("userId"))
+            user_id: Number(isAdmin(currentUser) ? formData.get("userId") : currentUser.id)
         };
+
+        if (!payload.title || !payload.content) {
+            showFeedback(feedback, "Title and content are required.", "error");
+            return;
+        }
 
         try {
             await request(`/notes/${noteId}`, {
@@ -517,8 +937,7 @@ async function initNoteEditPage() {
                 body: JSON.stringify(payload)
             });
 
-            showFeedback(feedback, "Note updated successfully.");
-            window.setTimeout(() => redirectTo("note-details.html", noteId), 700);
+            redirectWithFlash("note-details.html", "Note updated successfully.", noteId);
         } catch (error) {
             showFeedback(feedback, error.message, "error");
         }
@@ -531,8 +950,20 @@ async function initPage() {
 
     const pageName = getPageName();
 
+    if (pageName !== "login.html" && !requireLogin()) {
+        return;
+    }
+
+    showStoredFlashMessage();
+
     if (pageName === "login.html") {
         await initLoginPage();
+        return;
+    }
+
+    if (pageName === "register.html") {
+        await initRegisterPage();
+        return;
     }
 
     if (pageName === "users.html") {
@@ -564,6 +995,4 @@ async function initPage() {
     }
 }
 
-initPage().catch((error) => {
-    console.error(error);
-});
+initPage().catch(() => {});

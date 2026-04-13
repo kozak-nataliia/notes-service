@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | Notes Service</title>
@@ -10,28 +9,23 @@
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
                     <a class="page-nav__link page-nav__link--active" href="login.html">Login</a>
-                    <a class="page-nav__link" href="users.html">Users</a>
-                    <a class="page-nav__link" href="notes.html">Notes</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main page-main--centered">
             <section class="dialog" aria-labelledby="login-title">
                 <h1 id="login-title" class="page-title">Login</h1>
+                <p class="page-subtitle">Sign in to open your notes and continue where you left off.</p>
 
-                <!-- Error notification example -->
                 <div id="login-feedback" class="alert alert--error" role="alert" hidden>
                 </div>
 
-                <!-- Login form -->
                 <form id="login-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="username">Username</label>
@@ -43,7 +37,6 @@
                             placeholder="Enter username"
                             value=""
                         >
-                        <p class="validation-error">Username is required.</p>
                     </div>
 
                     <div class="form__group">
@@ -59,15 +52,15 @@
 
                     <div class="actions">
                         <button class="button" type="submit">Login</button>
+                        <a class="button button--secondary" href="register.html">Create account</a>
                     </div>
                 </form>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Interactive client for Lab 2
+                Notes Service
             </div>
         </footer>
     </div>

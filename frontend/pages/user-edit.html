@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit User | Notes Service</title>
@@ -10,20 +9,18 @@
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html" hidden>Users</a>
                     <a class="page-nav__link" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main page-main--centered">
             <section class="dialog" aria-labelledby="edit-user-title">
                 <h1 id="edit-user-title" class="page-title">Edit User</h1>
@@ -51,6 +48,7 @@
                             type="password"
                             placeholder="Enter a new password"
                         >
+                        <p class="helper-text">Leave blank if you do not want to change the password.</p>
                     </div>
 
                     <div class="form__group">
@@ -73,17 +71,16 @@
                     </div>
 
                     <div class="actions">
-                        <button class="button" type="submit">Ok</button>
+                        <button class="button" type="submit">Save changes</button>
                         <a class="button button--secondary" href="users.html">Cancel</a>
                     </div>
                 </form>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Interactive client for Lab 2
+                Notes Service
             </div>
         </footer>
     </div>

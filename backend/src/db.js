@@ -5,7 +5,6 @@ const db = new sqlite3.Database("./notes.db");
 function ensureColumn(tableName, columnName, definition) {
     db.all(`PRAGMA table_info(${tableName})`, (err, columns) => {
         if (err) {
-            console.error(`Failed to inspect ${tableName}:`, err.message);
             return;
         }
 
@@ -14,14 +13,7 @@ function ensureColumn(tableName, columnName, definition) {
         if (!hasColumn) {
             db.run(
                 `ALTER TABLE ${tableName} ADD COLUMN ${columnName} ${definition}`,
-                (alterErr) => {
-                    if (alterErr) {
-                        console.error(
-                            `Failed to add ${columnName} to ${tableName}:`,
-                            alterErr.message
-                        );
-                    }
-                }
+                () => {}
             );
         }
     });
@@ -30,7 +22,6 @@ function ensureColumn(tableName, columnName, definition) {
 function ensureUpdatedAtColumn() {
     db.all("PRAGMA table_info(notes)", (err, columns) => {
         if (err) {
-            console.error("Failed to inspect notes:", err.message);
             return;
         }
 
@@ -38,17 +29,11 @@ function ensureUpdatedAtColumn() {
 
         if (!hasColumn) {
             db.run("ALTER TABLE notes ADD COLUMN updated_at TEXT", (alterErr) => {
-                if (alterErr) {
-                    console.error(
-                        "Failed to add updated_at to notes:",
-                        alterErr.message
-                    );
-                    return;
-                }
-
+                if (!alterErr) {
                 db.run(
                     "UPDATE notes SET updated_at = datetime('now') WHERE updated_at IS NULL"
                 );
+                }
             });
         }
     });
@@ -57,7 +42,6 @@ function ensureUpdatedAtColumn() {
 db.serialize(() => {
     db.run("PRAGMA foreign_keys = ON");
 
-    // users table
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,7 +51,6 @@ db.serialize(() => {
         )
     `);
 
-    // notes table with user relation
     db.run(`
         CREATE TABLE IF NOT EXISTS notes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

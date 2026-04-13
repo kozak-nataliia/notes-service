@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>User Details | Notes Service</title>
@@ -10,25 +9,23 @@
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html" hidden>Users</a>
                     <a class="page-nav__link" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main">
             <div class="page-toolbar">
                 <div>
-                    <h1 class="page-title">User Details</h1>
-                    <p class="page-subtitle">Information about selected user.</p>
+                    <h1 class="page-title">User Profile</h1>
+                    <p class="page-subtitle">Account information and note ownership summary.</p>
                 </div>
                 <div class="toolbar-actions">
                     <a class="button button--secondary" href="users.html">Back to users</a>
@@ -59,23 +56,11 @@
                     <button id="delete-user-button" class="button button--danger" type="button">Delete user</button>
                 </div>
             </section>
-
-            <section class="card card--danger-state" aria-labelledby="delete-warning-title">
-                <h2 id="delete-warning-title" class="section-title">Delete confirmation</h2>
-                <p class="item-text">
-                    Deleting a user will also remove the notes owned by that user.
-                </p>
-                <div class="actions">
-                    <button class="button button--danger" type="button" onclick="document.getElementById('delete-user-button').click()">Confirm delete</button>
-                    <a class="button button--secondary" href="users.html">Cancel</a>
-                </div>
-            </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Interactive client for Lab 2
+                Notes Service
             </div>
         </footer>
     </div>

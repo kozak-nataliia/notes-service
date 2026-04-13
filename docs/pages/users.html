@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Users | Notes Service</title>
@@ -10,33 +9,30 @@
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html" hidden>Users</a>
                     <a class="page-nav__link" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main">
             <div class="page-toolbar">
                 <div>
                     <h1 class="page-title">Users</h1>
-                    <p class="page-subtitle">List of administrators and regular users.</p>
+                    <p class="page-subtitle">Manage accounts and review who has access to the app.</p>
                 </div>
                 <div class="toolbar-actions">
-                    <a class="button" href="user-edit.html">Create user</a>
+                    <a class="button" href="user-edit.html">New user</a>
                 </div>
             </div>
 
             <div class="page-grid">
-                <!-- Users list -->
                 <section class="card" aria-labelledby="users-list-title">
                     <h2 id="users-list-title" class="section-title">User list</h2>
 
@@ -45,9 +41,8 @@
                     </div>
                 </section>
 
-                <!-- Static create user dialog -->
                 <aside class="dialog" aria-labelledby="create-user-title">
-                    <h2 id="create-user-title" class="section-title">Create user</h2>
+                    <h2 id="create-user-title" class="section-title">Create User</h2>
                     <div id="users-feedback" class="alert alert--success" role="status" hidden></div>
 
                     <form id="create-user-form" class="form" action="#" method="post">
@@ -93,7 +88,7 @@
                         </div>
 
                         <div class="actions">
-                            <button class="button" type="submit">Ok</button>
+                            <button class="button" type="submit">Create user</button>
                             <a class="button button--secondary" href="users.html">Cancel</a>
                         </div>
                     </form>
@@ -101,10 +96,9 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Interactive client for Lab 2
+                Notes Service
             </div>
         </footer>
     </div>

@@ -231,6 +231,14 @@
     font-size: 14px;
 }
 
+.auth-divider {
+    margin: 28px 0 20px;
+}
+
+.auth-divider + .section-title {
+    margin-top: 0;
+}
+
 .actions {
     display: flex;
     gap: 10px;

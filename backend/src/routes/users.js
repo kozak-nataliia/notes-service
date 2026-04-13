@@ -1,9 +1,10 @@
 const express = require("express");
 const db = require("../db");
+const { requireAuth, requireAdmin, isAdmin } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", requireAuth, requireAdmin, (req, res) => {
     db.all(
         `
             SELECT
@@ -27,7 +28,11 @@ router.get("/", (req, res) => {
     );
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", requireAuth, (req, res) => {
+    if (!isAdmin(req.currentUser) && Number(req.params.id) !== req.currentUser.id) {
+        return res.status(403).json({ error: "You can only view your own profile" });
+    }
+
     db.get(
         `
             SELECT
@@ -55,7 +60,7 @@ router.get("/:id", (req, res) => {
     );
 });
 
-router.post("/", (req, res) => {
+router.post("/", requireAuth, requireAdmin, (req, res) => {
     const { username, password, role = "Regular" } = req.body;
 
     if (!username || !password) {
@@ -79,35 +84,46 @@ router.post("/", (req, res) => {
     );
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", requireAuth, (req, res) => {
     const { username, password, role = "Regular" } = req.body;
+    const isSelfUpdate = Number(req.params.id) === req.currentUser.id;
 
-    if (!username || !password) {
-        return res.status(400).json({ error: "Username and password are required" });
+    if (!isAdmin(req.currentUser) && !isSelfUpdate) {
+        return res.status(403).json({ error: "You can only edit your own profile" });
     }
 
-    db.run(
-        "UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?",
-        [username.trim(), password, role, req.params.id],
-        function updateCallback(err) {
-            if (err) {
-                return res.status(400).json({ error: "Unable to update user" });
-            }
+    if (!username) {
+        return res.status(400).json({ error: "Username is required" });
+    }
 
-            if (this.changes === 0) {
-                return res.status(404).json({ error: "User not found" });
-            }
+    const nextRole = isAdmin(req.currentUser) ? role : req.currentUser.role;
+    const trimmedUsername = username.trim();
+    const hasPasswordUpdate = Boolean(password);
+    const query = hasPasswordUpdate
+        ? "UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?"
+        : "UPDATE users SET username = ?, role = ? WHERE id = ?";
+    const params = hasPasswordUpdate
+        ? [trimmedUsername, password, nextRole, req.params.id]
+        : [trimmedUsername, nextRole, req.params.id];
 
-            return res.json({
-                id: Number(req.params.id),
-                username: username.trim(),
-                role
-            });
+    db.run(query, params, function updateCallback(err) {
+        if (err) {
+            return res.status(400).json({ error: "Unable to update user" });
         }
-    );
+
+        if (this.changes === 0) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        return res.json({
+            id: Number(req.params.id),
+            username: trimmedUsername,
+            role: nextRole
+        });
+    });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", requireAuth, requireAdmin, (req, res) => {
     const { id } = req.params;
 
     db.serialize(() => {
