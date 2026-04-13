@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -27,12 +28,11 @@
                 <h1 id="login-title" class="page-title">Login</h1>
 
                 <!-- Error notification example -->
-                <div class="alert alert--error" role="alert">
-                    Invalid username or password.
+                <div id="login-feedback" class="alert alert--error" role="alert" hidden>
                 </div>
 
                 <!-- Login form -->
-                <form class="form" action="#" method="post">
+                <form id="login-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="username">Username</label>
                         <input
@@ -67,7 +67,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>

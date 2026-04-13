@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Note | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -27,19 +28,17 @@
             <section class="dialog" aria-labelledby="edit-note-title">
                 <h1 id="edit-note-title" class="page-title">Edit Note</h1>
 
-                <div class="alert alert--success" role="status">
-                    Note loaded. This is a static preview of the edit state.
+                <div id="note-edit-feedback" class="alert alert--success" role="status" hidden>
                 </div>
 
-                <form class="form" action="#" method="post">
+                <form id="edit-note-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="edit-note-title-field">Title</label>
                         <input
                             class="form__input"
                             id="edit-note-title-field"
-                            name="edit-note-title-field"
+                            name="title"
                             type="text"
-                            value="Shopping list"
                         >
                     </div>
 
@@ -48,8 +47,8 @@
                         <textarea
                             class="form__textarea"
                             id="edit-note-content"
-                            name="edit-note-content"
-                        >Milk, bread, apples, cheese. Buy everything before evening.</textarea>
+                            name="content"
+                        ></textarea>
                     </div>
 
                     <div class="form__group">
@@ -57,28 +56,25 @@
                         <input
                             class="form__input"
                             id="edit-note-tags"
-                            name="edit-note-tags"
+                            name="tags"
                             type="text"
-                            value="home, food"
                         >
                     </div>
 
                     <div class="form__group">
-                        <label class="form__label" for="edit-shared-users">Shared users</label>
-                        <select class="form__select" id="edit-shared-users" name="edit-shared-users">
-                            <option selected>admin</option>
-                            <option>olena</option>
-                            <option>taras</option>
+                        <label class="form__label" for="edit-note-owner">Owner</label>
+                        <select class="form__select" id="edit-note-owner" name="userId">
+                            <option>Loading users...</option>
                         </select>
                     </div>
 
                     <div class="form__group">
-                        <p class="helper-text">Last edited by admin at 2026-04-12 13:54.</p>
+                        <p class="helper-text">Last updated: <span id="note-last-updated">Not available</span></p>
                     </div>
 
                     <div class="actions">
                         <button class="button" type="submit">Save changes</button>
-                        <a class="button button--secondary" href="note-details.html">Cancel</a>
+                        <a class="button button--secondary" href="notes.html">Cancel</a>
                     </div>
                 </form>
             </section>
@@ -87,7 +83,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>

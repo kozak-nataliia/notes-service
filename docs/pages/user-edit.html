@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit User | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -27,19 +28,17 @@
             <section class="dialog" aria-labelledby="edit-user-title">
                 <h1 id="edit-user-title" class="page-title">Edit User</h1>
 
-                <div class="alert alert--success" role="status">
-                    User data loaded successfully.
+                <div id="user-edit-feedback" class="alert alert--success" role="status" hidden>
                 </div>
 
-                <form class="form" action="#" method="post">
+                <form id="edit-user-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="edit-username">Username</label>
                         <input
                             class="form__input"
                             id="edit-username"
-                            name="edit-username"
+                            name="username"
                             type="text"
-                            value="test"
                         >
                     </div>
 
@@ -48,9 +47,9 @@
                         <input
                             class="form__input"
                             id="edit-password"
-                            name="edit-password"
+                            name="password"
                             type="password"
-                            value="12345678"
+                            placeholder="Enter a new password"
                         >
                     </div>
 
@@ -59,22 +58,18 @@
                         <input
                             class="form__input"
                             id="edit-confirm-password"
-                            name="edit-confirm-password"
+                            name="confirmPassword"
                             type="password"
-                            value="12345678"
+                            placeholder="Repeat the new password"
                         >
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="edit-role">Role</label>
-                        <select class="form__select" id="edit-role" name="edit-role">
-                            <option selected>Regular</option>
-                            <option>Admin</option>
+                        <select class="form__select" id="edit-role" name="role">
+                            <option value="Regular">Regular</option>
+                            <option value="Admin">Admin</option>
                         </select>
-                    </div>
-
-                    <div class="form__group">
-                        <p class="validation-error">Password must contain at least 8 characters.</p>
                     </div>
 
                     <div class="actions">
@@ -88,7 +83,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>

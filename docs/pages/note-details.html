@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Note Details | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -35,38 +36,29 @@
             </div>
 
             <section class="card details-card" aria-labelledby="note-details-title">
-                <h2 id="note-details-title" class="section-title">Shopping list</h2>
+                <h2 id="note-details-title" class="section-title">Loading note...</h2>
+                <div id="note-details-feedback" class="alert alert--error" role="alert" hidden></div>
 
                 <div class="details-list">
                     <div class="details-row">
                         <span class="details-label">Owner</span>
-                        <span class="details-value">test</span>
+                        <span id="note-owner" class="details-value">Unknown owner</span>
                     </div>
                     <div class="details-row">
                         <span class="details-label">Tags</span>
-                        <span class="details-value">home, food</span>
+                        <span id="note-tags" class="details-value">No tags</span>
                     </div>
                     <div class="details-row">
-                        <span class="details-label">Last edited by</span>
-                        <span class="details-value">admin</span>
-                    </div>
-                    <div class="details-row">
-                        <span class="details-label">Last edited at</span>
-                        <span class="details-value">2026-04-12 13:54</span>
-                    </div>
-                    <div class="details-row">
-                        <span class="details-label">Shared with</span>
-                        <span class="details-value">admin, olena</span>
+                        <span class="details-label">Last updated</span>
+                        <span id="note-updated" class="details-value">Not available</span>
                     </div>
                 </div>
 
-                <div class="content-box">
-                    Milk, bread, apples, cheese. Buy everything before evening.
-                </div>
+                <div id="note-content" class="content-box">Loading content...</div>
 
                 <div class="actions">
-                    <a class="button" href="note-edit.html">Edit note</a>
-                    <a class="button button--danger" href="notes.html">Delete note</a>
+                    <a id="edit-note-link" class="button" href="note-edit.html">Edit note</a>
+                    <button id="delete-note-button" class="button button--danger" type="button">Delete note</button>
                 </div>
             </section>
         </main>
@@ -74,7 +66,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>

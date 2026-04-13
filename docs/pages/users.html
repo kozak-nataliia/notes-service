@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Users | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -39,44 +40,23 @@
                 <section class="card" aria-labelledby="users-list-title">
                     <h2 id="users-list-title" class="section-title">User list</h2>
 
-                    <div class="list">
-                        <article class="user-item user-item--active">
-                            <div class="user-item__top">
-                                <h3 class="item-title">test</h3>
-                                <span class="badge">Regular</span>
-                            </div>
-                            <p class="item-text">Can create and edit personal notes.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="user-details.html">View</a>
-                                <a class="button button--secondary" href="user-edit.html">Edit</a>
-                            </div>
-                        </article>
-
-                        <article class="user-item">
-                            <div class="user-item__top">
-                                <h3 class="item-title">admin</h3>
-                                <span class="badge badge--admin">Admin</span>
-                            </div>
-                            <p class="item-text">Can manage users and inspect shared notes.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="user-details.html">View</a>
-                                <a class="button button--secondary" href="user-edit.html">Edit</a>
-                            </div>
-                        </article>
+                    <div id="users-list" class="list">
+                        <p class="item-text">Loading users...</p>
                     </div>
                 </section>
 
                 <!-- Static create user dialog -->
                 <aside class="dialog" aria-labelledby="create-user-title">
                     <h2 id="create-user-title" class="section-title">Create user</h2>
+                    <div id="users-feedback" class="alert alert--success" role="status" hidden></div>
 
-                    <form class="form" action="#" method="post">
+                    <form id="create-user-form" class="form" action="#" method="post">
                         <div class="form__group">
                             <label class="form__label" for="create-username">Username</label>
                             <input
                                 class="form__input"
                                 id="create-username"
-                                name="create-username"
+                                name="username"
                                 type="text"
                                 placeholder="Enter username"
                             >
@@ -87,7 +67,7 @@
                             <input
                                 class="form__input"
                                 id="create-password"
-                                name="create-password"
+                                name="password"
                                 type="password"
                                 placeholder="Enter password"
                             >
@@ -98,18 +78,17 @@
                             <input
                                 class="form__input"
                                 id="create-confirm-password"
-                                name="create-confirm-password"
+                                name="confirmPassword"
                                 type="password"
                                 placeholder="Repeat password"
                             >
-                            <p class="validation-error">Passwords must match.</p>
                         </div>
 
                         <div class="form__group">
                             <label class="form__label" for="create-role">Role</label>
-                            <select class="form__select" id="create-role" name="create-role">
-                                <option>Regular</option>
-                                <option>Admin</option>
+                            <select class="form__select" id="create-role" name="role">
+                                <option value="Regular">Regular</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
 
@@ -125,7 +104,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>

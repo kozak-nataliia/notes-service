@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
+require("./db");
+
+const authRoutes = require("./routes/auth");
 const notesRoutes = require("./routes/notes");
 const usersRoutes = require("./routes/users");
 
@@ -14,6 +17,7 @@ app.get("/", (req, res) => {
     res.send("API is working");
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/notes", notesRoutes);
 app.use("/api/users", usersRoutes);
 

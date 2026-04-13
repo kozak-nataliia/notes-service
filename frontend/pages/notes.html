@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Notes | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
@@ -27,42 +28,21 @@
             <div class="page-toolbar">
                 <div>
                     <h1 class="page-title">Notes</h1>
-                    <p class="page-subtitle">Personal and shared notes.</p>
+                    <p class="page-subtitle">Live notes loaded from the backend API.</p>
                 </div>
                 <div class="toolbar-actions">
                     <a class="button" href="note-create.html">Create note</a>
                 </div>
             </div>
+            <div id="notes-feedback" class="alert alert--success" role="status" hidden></div>
 
             <div class="page-grid">
                 <!-- Notes list -->
                 <section class="card" aria-labelledby="notes-list-title">
                     <h2 id="notes-list-title" class="section-title">Note list</h2>
 
-                    <div class="list">
-                        <article class="note-item note-item--active">
-                            <div class="note-item__top">
-                                <h3 class="item-title">Shopping list</h3>
-                                <span class="badge">Personal</span>
-                            </div>
-                            <p class="item-text">Milk, bread, apples, cheese.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="note-details.html">View</a>
-                                <a class="button button--secondary" href="note-edit.html">Edit</a>
-                            </div>
-                        </article>
-
-                        <article class="note-item">
-                            <div class="note-item__top">
-                                <h3 class="item-title">Project ideas</h3>
-                                <span class="badge badge--shared">Shared</span>
-                            </div>
-                            <p class="item-text">Websocket alerts, shared editing, note history.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="note-details.html">View</a>
-                                <a class="button button--secondary" href="note-edit.html">Edit</a>
-                            </div>
-                        </article>
+                    <div id="notes-list" class="list">
+                        <p class="item-text">Loading notes...</p>
                     </div>
                 </section>
 
@@ -72,25 +52,28 @@
                     <div class="details-list">
                         <div class="details-row">
                             <span class="details-label">Title</span>
-                            <span class="details-value">Shopping list</span>
+                            <span id="preview-note-title" class="details-value">Select a note</span>
                         </div>
                         <div class="details-row">
                             <span class="details-label">Owner</span>
-                            <span class="details-value">test</span>
+                            <span id="preview-owner" class="details-value">Not available</span>
                         </div>
                         <div class="details-row">
                             <span class="details-label">Tags</span>
-                            <span class="details-value">home, food</span>
+                            <span id="preview-tags" class="details-value">No tags</span>
+                        </div>
+                        <div class="details-row">
+                            <span class="details-label">Updated</span>
+                            <span id="preview-updated" class="details-value">Not available</span>
                         </div>
                     </div>
 
-                    <p class="item-text">
-                        Milk, bread, apples, cheese. Buy everything before evening.
-                    </p>
+                    <p id="preview-content" class="item-text">Choose a note to see its content here.</p>
 
                     <div class="actions">
-                        <a class="button" href="note-details.html">Open details</a>
-                        <a class="button button--danger" href="notes.html">Delete</a>
+                        <a id="preview-open" class="button" href="note-details.html">Open details</a>
+                        <a id="preview-edit" class="button button--secondary" href="note-edit.html">Edit</a>
+                        <button id="preview-delete" class="button button--danger" type="button">Delete</button>
                     </div>
                 </aside>
             </div>
@@ -99,7 +82,7 @@
         <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Interactive client for Lab 2
             </div>
         </footer>
     </div>
