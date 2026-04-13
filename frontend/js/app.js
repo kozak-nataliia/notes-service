@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "/api";
 const CURRENT_USER_KEY = "notes-service-current-user";
 const FLASH_MESSAGE_KEY = "notes-service-flash-message";
 

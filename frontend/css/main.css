@@ -500,13 +500,4 @@
   margin-top: 24px;
 }
 
-#notes-list .note-item {
-  cursor: pointer;
-}
-
-#notes-preview-card {
-  margin-top: 0;
-  transition: margin-top 0.2s ease;
-}
-
 /*# sourceMappingURL=main.css.map */
