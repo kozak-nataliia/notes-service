@@ -1,43 +1,41 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Create Note | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link" href="users.html" hidden>Users</a>
                     <a class="page-nav__link page-nav__link--active" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main page-main--centered">
             <section class="dialog" aria-labelledby="create-note-title">
-                <h1 id="create-note-title" class="page-title">Create Note</h1>
+                <h1 id="create-note-title" class="page-title">New Note</h1>
+                <div id="note-create-feedback" class="alert alert--success" role="status" hidden></div>
 
-                <form class="form" action="#" method="post">
+                <form id="create-note-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="note-title">Title</label>
                         <input
                             class="form__input"
                             id="note-title"
-                            name="note-title"
+                            name="title"
                             type="text"
                             placeholder="Enter note title"
                         >
-                        <p class="validation-error">Title is required.</p>
                     </div>
 
                     <div class="form__group">
@@ -45,7 +43,7 @@
                         <textarea
                             class="form__textarea"
                             id="note-content"
-                            name="note-content"
+                            name="content"
                             placeholder="Write your note here"
                         ></textarea>
                     </div>
@@ -55,33 +53,30 @@
                         <input
                             class="form__input"
                             id="note-tags"
-                            name="note-tags"
+                            name="tags"
                             type="text"
                             placeholder="home, work, urgent"
                         >
                     </div>
 
                     <div class="form__group">
-                        <label class="form__label" for="shared-users">Shared users</label>
-                        <select class="form__select" id="shared-users" name="shared-users">
-                            <option>admin</option>
-                            <option>olena</option>
-                            <option>taras</option>
+                        <label class="form__label" for="note-owner">Owner</label>
+                        <select class="form__select" id="note-owner" name="userId">
+                            <option>Loading users...</option>
                         </select>
                     </div>
 
                     <div class="actions">
-                        <button class="button" type="submit">Save</button>
+                        <button class="button" type="submit">Create note</button>
                         <a class="button button--secondary" href="notes.html">Cancel</a>
                     </div>
                 </form>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Notes Service
             </div>
         </footer>
     </div>

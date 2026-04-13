@@ -1,82 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Users | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html" hidden>Users</a>
                     <a class="page-nav__link" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main">
             <div class="page-toolbar">
                 <div>
                     <h1 class="page-title">Users</h1>
-                    <p class="page-subtitle">List of administrators and regular users.</p>
+                    <p class="page-subtitle">Manage accounts and review who has access to the app.</p>
                 </div>
                 <div class="toolbar-actions">
-                    <a class="button" href="user-edit.html">Create user</a>
+                    <a class="button" href="user-edit.html">New user</a>
                 </div>
             </div>
 
             <div class="page-grid">
-                <!-- Users list -->
                 <section class="card" aria-labelledby="users-list-title">
                     <h2 id="users-list-title" class="section-title">User list</h2>
 
-                    <div class="list">
-                        <article class="user-item user-item--active">
-                            <div class="user-item__top">
-                                <h3 class="item-title">test</h3>
-                                <span class="badge">Regular</span>
-                            </div>
-                            <p class="item-text">Can create and edit personal notes.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="user-details.html">View</a>
-                                <a class="button button--secondary" href="user-edit.html">Edit</a>
-                            </div>
-                        </article>
-
-                        <article class="user-item">
-                            <div class="user-item__top">
-                                <h3 class="item-title">admin</h3>
-                                <span class="badge badge--admin">Admin</span>
-                            </div>
-                            <p class="item-text">Can manage users and inspect shared notes.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="user-details.html">View</a>
-                                <a class="button button--secondary" href="user-edit.html">Edit</a>
-                            </div>
-                        </article>
+                    <div id="users-list" class="list">
+                        <p class="item-text">Loading users...</p>
                     </div>
                 </section>
 
-                <!-- Static create user dialog -->
                 <aside class="dialog" aria-labelledby="create-user-title">
-                    <h2 id="create-user-title" class="section-title">Create user</h2>
+                    <h2 id="create-user-title" class="section-title">Create User</h2>
+                    <div id="users-feedback" class="alert alert--success" role="status" hidden></div>
 
-                    <form class="form" action="#" method="post">
+                    <form id="create-user-form" class="form" action="#" method="post">
                         <div class="form__group">
                             <label class="form__label" for="create-username">Username</label>
                             <input
                                 class="form__input"
                                 id="create-username"
-                                name="create-username"
+                                name="username"
                                 type="text"
                                 placeholder="Enter username"
                             >
@@ -87,7 +62,7 @@
                             <input
                                 class="form__input"
                                 id="create-password"
-                                name="create-password"
+                                name="password"
                                 type="password"
                                 placeholder="Enter password"
                             >
@@ -98,23 +73,22 @@
                             <input
                                 class="form__input"
                                 id="create-confirm-password"
-                                name="create-confirm-password"
+                                name="confirmPassword"
                                 type="password"
                                 placeholder="Repeat password"
                             >
-                            <p class="validation-error">Passwords must match.</p>
                         </div>
 
                         <div class="form__group">
                             <label class="form__label" for="create-role">Role</label>
-                            <select class="form__select" id="create-role" name="create-role">
-                                <option>Regular</option>
-                                <option>Admin</option>
+                            <select class="form__select" id="create-role" name="role">
+                                <option value="Regular">Regular</option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
 
                         <div class="actions">
-                            <button class="button" type="submit">Ok</button>
+                            <button class="button" type="submit">Create user</button>
                             <a class="button button--secondary" href="users.html">Cancel</a>
                         </div>
                     </form>
@@ -122,10 +96,9 @@
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Notes Service
             </div>
         </footer>
     </div>

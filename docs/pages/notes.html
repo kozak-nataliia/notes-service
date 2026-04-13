@@ -1,105 +1,84 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Notes | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link" href="users.html" hidden>Users</a>
                     <a class="page-nav__link page-nav__link--active" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main">
             <div class="page-toolbar">
                 <div>
                     <h1 class="page-title">Notes</h1>
-                    <p class="page-subtitle">Personal and shared notes.</p>
+                    <p class="page-subtitle">Browse, preview, and manage your notes.</p>
                 </div>
                 <div class="toolbar-actions">
-                    <a class="button" href="note-create.html">Create note</a>
+                    <a class="button" href="note-create.html">New note</a>
                 </div>
             </div>
+            <div id="notes-feedback" class="alert alert--success" role="status" hidden></div>
 
             <div class="page-grid">
-                <!-- Notes list -->
                 <section class="card" aria-labelledby="notes-list-title">
                     <h2 id="notes-list-title" class="section-title">Note list</h2>
 
-                    <div class="list">
-                        <article class="note-item note-item--active">
-                            <div class="note-item__top">
-                                <h3 class="item-title">Shopping list</h3>
-                                <span class="badge">Personal</span>
-                            </div>
-                            <p class="item-text">Milk, bread, apples, cheese.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="note-details.html">View</a>
-                                <a class="button button--secondary" href="note-edit.html">Edit</a>
-                            </div>
-                        </article>
-
-                        <article class="note-item">
-                            <div class="note-item__top">
-                                <h3 class="item-title">Project ideas</h3>
-                                <span class="badge badge--shared">Shared</span>
-                            </div>
-                            <p class="item-text">Websocket alerts, shared editing, note history.</p>
-                            <div class="actions actions--small">
-                                <a class="button button--secondary" href="note-details.html">View</a>
-                                <a class="button button--secondary" href="note-edit.html">Edit</a>
-                            </div>
-                        </article>
+                    <div id="notes-list" class="list">
+                        <p class="item-text">Loading notes...</p>
                     </div>
                 </section>
+                <div id="notes-preview-anchor" hidden></div>
+            </section>
 
-                <!-- Note preview -->
-                <aside class="card" aria-labelledby="preview-title">
-                    <h2 id="preview-title" class="section-title">Note preview</h2>
-                    <div class="details-list">
-                        <div class="details-row">
-                            <span class="details-label">Title</span>
-                            <span class="details-value">Shopping list</span>
-                        </div>
-                        <div class="details-row">
-                            <span class="details-label">Owner</span>
-                            <span class="details-value">test</span>
-                        </div>
-                        <div class="details-row">
-                            <span class="details-label">Tags</span>
-                            <span class="details-value">home, food</span>
-                        </div>
+            <aside id="notes-preview-card" class="card" aria-labelledby="preview-title">
+                <h2 id="preview-title" class="section-title">Note preview</h2>
+                <div class="details-list">
+                    <div class="details-row">
+                        <span class="details-label">Title</span>
+                        <span id="preview-note-title" class="details-value">Select a note</span>
                     </div>
-
-                    <p class="item-text">
-                        Milk, bread, apples, cheese. Buy everything before evening.
-                    </p>
-
-                    <div class="actions">
-                        <a class="button" href="note-details.html">Open details</a>
-                        <a class="button button--danger" href="notes.html">Delete</a>
+                    <div class="details-row">
+                        <span class="details-label">Owner</span>
+                        <span id="preview-owner" class="details-value">Not available</span>
                     </div>
-                </aside>
+                    <div class="details-row">
+                        <span class="details-label">Tags</span>
+                        <span id="preview-tags" class="details-value">No tags</span>
+                    </div>
+                    <div class="details-row">
+                        <span class="details-label">Updated</span>
+                        <span id="preview-updated" class="details-value">Not available</span>
+                    </div>
+                </div>
+
+                <p id="preview-content" class="item-text">Choose a note to see its content here.</p>
+
+                <div class="actions">
+                    <a id="preview-open" class="button" href="note-details.html">Open details</a>
+                    <a id="preview-edit" class="button button--secondary" href="note-edit.html">Edit</a>
+                    <button id="preview-delete" class="button button--danger" type="button">Delete</button>
+                </div>
+            </aside>
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Notes Service
             </div>
         </footer>
     </div>

@@ -1,33 +1,31 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Note Details | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link" href="users.html" hidden>Users</a>
                     <a class="page-nav__link page-nav__link--active" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main">
             <div class="page-toolbar">
                 <div>
                     <h1 class="page-title">Note Details</h1>
-                    <p class="page-subtitle">Detailed information about selected note.</p>
+                    <p class="page-subtitle">Full note content and note information.</p>
                 </div>
                 <div class="toolbar-actions">
                     <a class="button button--secondary" href="notes.html">Back to notes</a>
@@ -35,46 +33,36 @@
             </div>
 
             <section class="card details-card" aria-labelledby="note-details-title">
-                <h2 id="note-details-title" class="section-title">Shopping list</h2>
+                <h2 id="note-details-title" class="section-title">Loading note...</h2>
+                <div id="note-details-feedback" class="alert alert--error" role="alert" hidden></div>
 
                 <div class="details-list">
                     <div class="details-row">
                         <span class="details-label">Owner</span>
-                        <span class="details-value">test</span>
+                        <span id="note-owner" class="details-value">Unknown owner</span>
                     </div>
                     <div class="details-row">
                         <span class="details-label">Tags</span>
-                        <span class="details-value">home, food</span>
+                        <span id="note-tags" class="details-value">No tags</span>
                     </div>
                     <div class="details-row">
-                        <span class="details-label">Last edited by</span>
-                        <span class="details-value">admin</span>
-                    </div>
-                    <div class="details-row">
-                        <span class="details-label">Last edited at</span>
-                        <span class="details-value">2026-04-12 13:54</span>
-                    </div>
-                    <div class="details-row">
-                        <span class="details-label">Shared with</span>
-                        <span class="details-value">admin, olena</span>
+                        <span class="details-label">Last updated</span>
+                        <span id="note-updated" class="details-value">Not available</span>
                     </div>
                 </div>
 
-                <div class="content-box">
-                    Milk, bread, apples, cheese. Buy everything before evening.
-                </div>
+                <div id="note-content" class="content-box">Loading content...</div>
 
                 <div class="actions">
-                    <a class="button" href="note-edit.html">Edit note</a>
-                    <a class="button button--danger" href="notes.html">Delete note</a>
+                    <a id="edit-note-link" class="button" href="note-edit.html">Edit note</a>
+                    <button id="delete-note-button" class="button button--danger" type="button">Delete note</button>
                 </div>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Notes Service
             </div>
         </footer>
     </div>

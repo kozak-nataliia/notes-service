@@ -1,45 +1,41 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <!-- Technical information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit User | Notes Service</title>
     <link rel="stylesheet" href="../css/main.css">
+    <script src="../js/app.js" defer></script>
 </head>
 <body class="site-body">
     <div class="page-shell">
-        <!-- Header -->
         <header class="page-header">
             <div class="page-header__inner">
                 <div class="page-brand">Notes Service</div>
                 <nav class="page-nav" aria-label="Main navigation">
-                    <a class="page-nav__link" href="login.html">Login</a>
-                    <a class="page-nav__link page-nav__link--active" href="users.html">Users</a>
+                    <a class="page-nav__link" href="login.html" hidden>Login</a>
+                    <a class="page-nav__link page-nav__link--active" href="users.html" hidden>Users</a>
                     <a class="page-nav__link" href="notes.html">Notes</a>
-                    <a class="page-nav__link page-nav__link--logout" href="login.html">Logout</a>
+                    <a class="page-nav__link page-nav__link--logout" href="login.html" hidden>Logout</a>
                 </nav>
             </div>
         </header>
 
-        <!-- Main content -->
         <main class="page-main page-main--centered">
             <section class="dialog" aria-labelledby="edit-user-title">
                 <h1 id="edit-user-title" class="page-title">Edit User</h1>
 
-                <div class="alert alert--success" role="status">
-                    User data loaded successfully.
+                <div id="user-edit-feedback" class="alert alert--success" role="status" hidden>
                 </div>
 
-                <form class="form" action="#" method="post">
+                <form id="edit-user-form" class="form" action="#" method="post">
                     <div class="form__group">
                         <label class="form__label" for="edit-username">Username</label>
                         <input
                             class="form__input"
                             id="edit-username"
-                            name="edit-username"
+                            name="username"
                             type="text"
-                            value="test"
                         >
                     </div>
 
@@ -48,10 +44,11 @@
                         <input
                             class="form__input"
                             id="edit-password"
-                            name="edit-password"
+                            name="password"
                             type="password"
-                            value="12345678"
+                            placeholder="Enter a new password"
                         >
+                        <p class="helper-text">Leave blank if you do not want to change the password.</p>
                     </div>
 
                     <div class="form__group">
@@ -59,36 +56,31 @@
                         <input
                             class="form__input"
                             id="edit-confirm-password"
-                            name="edit-confirm-password"
+                            name="confirmPassword"
                             type="password"
-                            value="12345678"
+                            placeholder="Repeat the new password"
                         >
                     </div>
 
                     <div class="form__group">
                         <label class="form__label" for="edit-role">Role</label>
-                        <select class="form__select" id="edit-role" name="edit-role">
-                            <option selected>Regular</option>
-                            <option>Admin</option>
+                        <select class="form__select" id="edit-role" name="role">
+                            <option value="Regular">Regular</option>
+                            <option value="Admin">Admin</option>
                         </select>
                     </div>
 
-                    <div class="form__group">
-                        <p class="validation-error">Password must contain at least 8 characters.</p>
-                    </div>
-
                     <div class="actions">
-                        <button class="button" type="submit">Ok</button>
+                        <button class="button" type="submit">Save changes</button>
                         <a class="button button--secondary" href="users.html">Cancel</a>
                     </div>
                 </form>
             </section>
         </main>
 
-        <!-- Footer -->
         <footer class="page-footer">
             <div class="page-footer__inner">
-                Static layout for Lab 1
+                Notes Service
             </div>
         </footer>
     </div>

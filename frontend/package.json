@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "scss": "sass scss/main.scss css/main.css --watch",
-  "build-css": "sass scss/main.scss css/main.css"
+    "scss": "sass scss/main.scss css/main.css --watch",
+    "build-css": "sass scss/main.scss css/main.css",
+    "lint": "node ./node_modules/eslint/bin/eslint.js **/*.js --ignore-pattern node_modules/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1",
     "sass": "^1.99.0"
   }
 }
