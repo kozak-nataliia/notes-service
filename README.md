@@ -1,5 +1,11 @@
 # Notes Service
 
+A simple notes application with:
+- Express + SQLite backend
+- static HTML/CSS/JS frontend
+- Docker support
+- local run support
+
 ## Run with Docker
 
 From the project root, run:
@@ -8,43 +14,28 @@ From the project root, run:
 docker compose up --build
 ```
 
-Wait until you see messages like:
+Open the app at:
 
 ```
-Server running on port 3000
-```
-
----
-
-## How to open the app
-
-Open in your browser:
-
-Frontend (main app):
 http://localhost:8080/pages/login.html
+```
 
-Backend (API test):
-http://localhost:3000
+The backend API is available at:
 
----
+```
+http://localhost:3000/api
+```
 
-## How to use
+### How Docker storage works
 
-1. Open the frontend link
-2. Register
-3. Create / edit / delete notes
-
----
-
-## Requirements
-
-* Docker installed
+The SQLite database file is stored in `backend/notes.db`.
+In Docker Compose, the whole `backend` folder is mounted into the container, so data stays in that file on your computer and is not lost when containers are restarted.
 
 ---
 
-## Alternative (without Docker)
+## Run locally
 
-Run backend manually:
+### 1. Start the backend
 
 ```bash
 cd backend
@@ -52,8 +43,46 @@ npm install
 npm start
 ```
 
-Then open frontend manually:
+You should see:
 
 ```
-http://localhost:8080/pages/login.html
+Server running on port 3000
+```
+
+### 2. Start the frontend
+
+Open a second terminal:
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Open the app at:
+
+```
+http://localhost:8081/pages/login.html
+```
+
+For local run, the frontend talks directly to `http://localhost:3000/api`.
+For Docker run, the frontend uses the nginx proxy at `/api`.
+
+---
+
+## Lint check
+
+From the `frontend` folder:
+
+```bash
+npm run lint
+```
+
+---
+
+## Project structure
+
+```
+backend/   Express API + SQLite database
+frontend/  Static pages, styles and JavaScript
 ```

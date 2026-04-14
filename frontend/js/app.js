@@ -1,4 +1,16 @@
-const API_BASE_URL = "/api";
+const API_BASE_URL = (() => {
+    const { protocol, hostname, port } = window.location;
+
+    if (protocol === "file:") {
+        return "http://localhost:3000/api";
+    }
+
+    if ((hostname === "localhost" || hostname === "127.0.0.1") && port === "8080") {
+        return "/api";
+    }
+
+    return "http://localhost:3000/api";
+})();
 const CURRENT_USER_KEY = "notes-service-current-user";
 const FLASH_MESSAGE_KEY = "notes-service-flash-message";
 
@@ -16,6 +28,11 @@ function setCurrentUser(user) {
 
 function clearCurrentUser() {
     window.localStorage.removeItem(CURRENT_USER_KEY);
+}
+
+function getPageName() {
+    const parts = window.location.pathname.split("/");
+    return parts[parts.length - 1];
 }
 
 function setFlashMessage(message, type = "success", page = getPageName()) {
@@ -42,11 +59,6 @@ function consumeFlashMessage() {
         window.sessionStorage.removeItem(FLASH_MESSAGE_KEY);
         return null;
     }
-}
-
-function getPageName() {
-    const parts = window.location.pathname.split("/");
-    return parts[parts.length - 1];
 }
 
 function getQueryId() {
@@ -81,7 +93,6 @@ function showFeedback(element, message, type = "success") {
     element.hidden = false;
     element.className = `alert alert--${type}`;
     element.textContent = message;
-
 }
 
 function hideFeedback(element) {
